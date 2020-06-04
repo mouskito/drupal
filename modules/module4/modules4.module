@@ -1,0 +1,120 @@
+<?php
+
+/**
+  * Implements hook_node_view().
+  */
+function module4_node_view($node, $view_mode, $langcode){
+  if(isset($_COOKIE['Drupal_visitor_oeuvre1'], $_COOKIE['Drupal_visitor_oeuvre2'], $_COOKIE['Drupal_visitor_oeuvre3']) AND $node->type == 'oeuvre_d_art'){
+    if($node->nid != $_COOKIE['Drupal_visitor_oeuvre1'] AND
+       $node->nid != $_COOKIE['Drupal_visitor_oeuvre2'] AND
+       $node->nid != $_COOKIE['Drupal_visitor_oeuvre3']){
+      user_cookie_save(array('oeuvre3' => $_COOKIE['Drupal_visitor_oeuvre2']));
+      user_cookie_save(array('oeuvre2' => $_COOKIE['Drupal_visitor_oeuvre1']));
+      user_cookie_save(array('oeuvre1' => $node->nid));
+    } 
+  } else {
+      user_cookie_save(array('oeuvre3' => '0'));
+      user_cookie_save(array('oeuvre2' => '0'));
+      user_cookie_save(array('oeuvre1' => $node->nid));
+  }
+}
+
+/**
+  * Implements hook_theme().
+  */
+function module4_theme(){
+  return array(
+    'module4' => array(
+      'template' => 'module4-lastartworks',
+      'variables' => array('artwork' => null),
+      ),
+    );
+}
+
+/**
+  * Implements hook_block_info().
+  */
+function module4_block_info() {
+     $blocks['dernieres_oeuvres_visitees'] = array('info' => t('Dernières oeuvres visitées'));
+     return $blocks;
+}
+
+/**
+  * Implements hook_block_view().
+  */
+function module4_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'dernieres_oeuvres_visitees':
+      $block['subject'] = t('Dernières oeuvres visitées');
+      // $block['content'] = theme('module4', array('artwork' => _module4_version3()));
+      $block['content'] = array(
+        '#markup' => _module4_version4(),
+        );
+    break;
+  }
+  return $block;
+}
+
+function _module4_version1(){
+  $nids = array();
+  for($id = 1; $id < 4; $id++){
+    array_push($nids, $_COOKIE['Drupal_visitor_oeuvre'.$id]);
+  }
+  $query = db_select('node', 'n')
+      ->condition('nid', $nids, 'IN')
+      ->fields('n', array('title'))
+      ->execute()
+      ->fetchAllKeyed(0,0);
+
+  $list = array(
+    '#items' => $query,
+    '#theme' => 'item_list',
+    );
+  return drupal_render($list);
+}
+
+function _module4_version2(){
+  $result = '';
+  for($id = 1; $id < 4; $id++){
+    $teaser = node_view(node_load($_COOKIE['Drupal_visitor_oeuvre'.$id]), 'teaser');
+    $result .= drupal_render($teaser);
+  }
+  return $result;
+}
+
+function _module4_version3(){
+  if(isset($_COOKIE['Drupal_visitor_oeuvre1']) AND $_COOKIE['Drupal_visitor_oeuvre1'] != '0'){
+    $nids = array();
+    for($id = 1; $id < 4; $id++){
+      array_push($nids, $_COOKIE['Drupal_visitor_oeuvre'.$id]);
+    }
+    $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('entity_id', $nids, 'IN')
+      ->fieldCondition('field_annee', 'value', 1980, '<');
+    $result = $query->execute();
+    $items = array();
+    foreach($result['node'] as $node) {
+      $wrapper = entity_metadata_wrapper('node', $node->nid);
+      array_push($items, array(
+        'title' => $wrapper->title->value(),
+        'artiste' => $wrapper->field_artiste->title->value(),
+        'annee' => $wrapper->field_annee->value(),
+      ));
+    }
+    return $items;
+  } return array();
+}
+
+function _module4_version4(){
+  if(isset($_COOKIE['Drupal_visitor_oeuvre1']) AND $_COOKIE['Drupal_visitor_oeuvre1'] != '0'){
+    $view =views_get_view('oeuvres');
+    $view->display['default']->display_options['filters']['nid']['value']['value'] =
+    '('.$_COOKIE['Drupal_visitor_oeuvre1'].'|'.$_COOKIE['Drupal_visitor_oeuvre2'].'|'.$_COOKIE['Drupal_visitor_oeuvre3'].')';
+    return $view->preview();
+  } 
+}
+
+
+

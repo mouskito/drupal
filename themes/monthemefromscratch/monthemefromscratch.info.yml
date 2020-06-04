@@ -1,0 +1,10 @@
+name: Mon Theme From Scratch
+type: theme
+description: 'Je créé mon theme comme un grand :).'
+core: 8.x
+libraries:
+  - monthemefromscratch/global-styling
+regions:
+  header: Header
+  content: Content
+  footer: Footer

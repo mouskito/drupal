@@ -1,0 +1,13 @@
+name: hello
+type: theme
+description: 'hello'
+package: Other
+core: 8.x
+libraries:
+  - hello/global-styling
+  - hello/test
+ 
+base theme: false
+
+regions:
+  content: Content

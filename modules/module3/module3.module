@@ -1,0 +1,50 @@
+<?php
+
+/**
+  * Implements hook_form_alter().
+  */
+function module3_form_user_register_form_alter(&$form, &$form_state){
+
+  $form['verification'] = array(
+  '#type' => 'textfield',
+  '#title' => t('Addition de 3 + 9 ?'),
+  '#default_value' => "",
+  '#size' => 60,
+  '#maxlength' => 128,
+  '#required' => TRUE,
+  );
+}
+
+/**
+  * Implements hook_user_insert().
+  */
+function module3_user_insert(&$edit) {
+  dump($edit);
+  dump($edit['user']);
+  dump($edit['fields']);die;
+  dump($edit['verification']);die;
+  if($edit['verification'] != variable_get('module3_reponse', '12')){
+      user_multiple_role_edit(array($edit['uid']), 'add_role', '5');
+      $body = 'Un nouveau Litteraire, '.$edit['name'].', à rejoint le site !';
+  } else {
+      user_multiple_role_edit(array($edit['uid']), 'add_role', '6');
+      $body = 'Un nouveau Scientifique, '.$edit['name'].', à rejoint le site !';
+  }
+  $to = variable_get('module3_mail', 'to_address@example.com');
+  $subject = 'Nouvel utilisateur';
+  drupal_mail('module3', '', $to, '', array('body' => $body, 'subject' => $subject));
+}
+
+/**
+  * Implements hook_mail().
+  */
+function module3_mail($key, &$message, $params){
+  if (isset($params['subject'])) {
+      $message['subject'] = $params['subject'];
+  }
+  if (isset($params['body'])) {
+      $message['body'][] = $params['body'];
+  }
+}
+
+

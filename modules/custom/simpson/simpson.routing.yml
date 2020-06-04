@@ -1,0 +1,7 @@
+simpson.simpson_controller_hello:
+  path: '/simpson/hello'
+  defaults:
+    _controller: '\Drupal\simpson\Controller\SimpsonController::hello'
+    _title: 'test'
+  requirements:
+    _permission: 'access content'

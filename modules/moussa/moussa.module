@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains moussa.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function moussa_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the moussa module.
+    case 'help.page.moussa':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('test') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function moussa_theme() {
+  return [
+    'moussa' => [
+      'render element' => 'children',
+    ],
+  ];
+}

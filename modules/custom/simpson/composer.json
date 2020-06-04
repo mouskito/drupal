@@ -1,0 +1,13 @@
+{
+    "name": "simpson",
+    "type": "drupal-module",
+    "description": "My Awesome Module",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/simpson",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/simpson",
+        "source": "http://cgit.drupalcode.org/simpson",
+    },
+}

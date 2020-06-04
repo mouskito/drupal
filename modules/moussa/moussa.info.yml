@@ -1,0 +1,5 @@
+name: 'moussa'
+type: module
+description: 'test'
+core: 8.x
+package: 'Custom'

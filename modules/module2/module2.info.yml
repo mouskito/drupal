@@ -1,0 +1,4 @@
+name: Module2
+type: module
+description: Un module pour le cours 3w TP9
+core: 8.x

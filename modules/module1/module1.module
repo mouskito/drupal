@@ -1,0 +1,22 @@
+<?php
+/*
+********* Hook user login*/
+use Symfony\Component\HttpFoundation\RedirectResponse; 
+
+function module1_user_login($account) {
+  drupal_set_message(t('Hello %name, soit le bienvenu !!!', ['%name' => $account->getDisplayName()]));
+  return new RedirectResponse('<front>');
+}
+
+
+/*Hook user insert*/
+function module1_user_insert($account){
+//code PHP pouvant agir sur les trois variables fournit en argumant
+	$msg='3 + 4 = ' . _module1_addition(3,4);
+	drupal_set_message($msg);
+}
+
+function _module1_addition($a, $b){
+//code PHP pouvant agir sur les trois variables fournit en argumant
+return($a + $b);
+}
