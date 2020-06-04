@@ -1,0 +1,19 @@
+{
+  "name": "drupal/simple_addthis",
+  "description": "The Simple Addthis module allows users to share content across every social\nmedia platform and cross-promote the web site..",
+  "type": "drupal-module",
+  "keywords": ["Drupal", " SEO", "Third-party Integration", "Social", "media", "share"],
+  "homepage": "http://drupal.org/project/simple_addthis",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Said EL FAZNI (fazni)",
+      "homepage": "https://www.drupal.org/u/fazni",
+      "role": "Maintainer"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/simple_addthis",
+    "source": "https://git.drupalcode.org/project/simple_addthis"
+  }
+}
